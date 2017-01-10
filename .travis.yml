@@ -1,0 +1,6 @@
+---
+language: ruby
+before_script: 'sudo pip install bashate'
+script:
+  - 'bundle exec rubocop -D'
+  - 'bashate -i E006 bashrc setup.sh lib/*.sh lib/host/*.sh profile.d/*.sh profile.d/*.sh'
