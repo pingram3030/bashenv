@@ -3,10 +3,6 @@
 # Common Functions
 #
 
-bashrc () {
-    source ${HOME}/.bashrc
-}
-
 echoerr () {
     echo "$@" >&2
 }

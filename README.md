@@ -15,6 +15,11 @@ yet use the same aliases, functions and scripts.
 ./setup.sh
 ```
 
+### Admin
+
+The `bashenv` function enables basic admin functionality for BashEnv. You can
+tab complete its options for more info.
+
 ### Using
 
 To make use of the auto-automatic completion functions and such, simply create
@@ -31,7 +36,7 @@ For example:
 
 ```
 
-And then just execute the `bashrc` function to reload the bashenv.
+And then just execute the `bashenv` function to reload the bashenv.
 
 You can now use the name of your environment to get to its git repos.
 
