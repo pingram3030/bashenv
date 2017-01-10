@@ -10,9 +10,6 @@ export ENV_LIB="${ENV_ROOT}/lib"
 export ENV_VAR="${ENV_ROOT}/var"
 export BASHENV="${ENV_ROOT}/bashrc"
 
-export HISTTIMEFORMAT='%Y%m%d%H%M%S - '
-HISTSIZE=1000000000
-
 [[ -z ${PRE_ENV_PATH-} ]] && export PRE_ENV_PATH="${PATH}"
 
 [[ ! "${PATH}" =~ "${ENV_BIN}" ]] \
