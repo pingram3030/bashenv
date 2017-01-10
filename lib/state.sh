@@ -2,7 +2,7 @@
 
 export ENV_VAR_STATE="${ENV_VAR}/state"
 
-[[ ! -d "${ENV_VAR_STATE}" ]] && mkdir -p "${ENV_VAR_STATE}"  
+[[ ! -d "${ENV_VAR_STATE}" ]] && mkdir -p "${ENV_VAR_STATE}"
 
 state_test () {
     local environment=$1

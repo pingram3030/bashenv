@@ -26,7 +26,7 @@ for profile_file in $(find ${ENV_ROOT}/profile.d/ -type f -name '*.sh'); do
     source "${profile_file}"
 done
 
-for completion_file in $(find "${ENV_ROOT}/completion.d/" -type f -name '*.sh'); do
+for complete_file in $(find "${ENV_ROOT}/completion.d/" -type f -name '*.sh'); do
     source ${completion_file}
 done
 
