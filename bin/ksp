@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd "$HOME/.steam/steam/steamapps/common/Kerbal Space Program/"
+./KSP.x86_64
