@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+# Sometimes the google plugin fritzes out; this "solves" the problem
+#
+kill $(ps uaxf | grep [g]oog | awk '{print $2}')
+
