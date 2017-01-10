@@ -1,3 +1,4 @@
 lib/private/*
 profile.d/private/*
 var/*
+Gemfile.lock
