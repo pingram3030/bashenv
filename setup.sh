@@ -36,7 +36,7 @@ echo -n "Checking ~/.bash directory: "
 echo -n "Checking ~/.bashrc: "
 [[ $(grep -c "${SOURCE}" ${BASHRC} || true) == 0 ]] \
     && echo "Adding a source to ~/.bashrc" \
-    && echo -e "\n# BashEnv\n${SOURCE}" >> ${BASHRC} \
+    && echo -e "\n# BashEnv\n#export DEBUG=true\n${SOURCE}" >> ${BASHRC} \
     && source ${BASHRC} \
     || echo "OK"
 
