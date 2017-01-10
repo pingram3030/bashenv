@@ -1,0 +1,173 @@
+#!/usr/bin/env ruby
+#
+# TV Episode Renamer
+#
+# A lot of TV series have whacked out file naming schemes that bork automated
+# grabbers; like in Kodi. This script gives you some tools to help rename files
+#
+# Clean String
+#   Provide a string to be stripped. Input is automatically sanitised. E.g.
+#   E.g. [Crew] or foo.bar
+#
+# Clean Regex
+#   Provide a regex for .gsub to strip. Special chars must be escaped.
+#   E.g. \[\w+\]
+#
+# Clean Spaces
+#   Automatically clean out double spaces and spaces before the file extension.
+#
+# Clean Underscores
+#   Replace all underscores with spaces
+#
+# Clean Periods
+#   Replace all periods with spaces.
+#
+# Find/Replace
+#   Do a cool dynamic s///.
+#   E.g.  5x(\d\d)
+#         [S05E\1]
+#
+
+require 'pp'
+require 'fileutils'
+require 'io/console'
+
+# Rename Episodes
+#
+# rubocop:disable Metrics/ClassLength
+class RenameEpisodes
+  # rubocop:disable Metrics/LineLength
+  MEDIA_TYPES = %w(asf avi divx m2ts m4v mkv mov mp4 mpeg mpg ogm rmvb ts vob webm wmv).freeze
+  SPECIAL_CHARS = %w([ ] . $ ( )).freeze
+  # rubocop:enable Metrics/LineLength
+
+  def initialize
+    @files = {}
+    Dir.glob(File.join(Dir.getwd, '*')) do |f|
+      @files[File.basename(f)] = File.basename(f) if media?(f)
+    end
+    main
+  end
+
+  def clean_string
+    print 'Enter string to strip: '
+    pattern = escape(gets.chomp)
+    @files.each do |k, v|
+      v.gsub!(/#{pattern}/, '')
+      @files[k] = v
+    end
+  end
+
+  def clean_regex
+    print 'Enter regex to strip: '
+    pattern = gets.chomp
+    @files.each do |k, v|
+      v.gsub!(/#{pattern}/, '')
+      @files[k] = v
+    end
+  end
+
+  def clean_spaces
+    @files.each do |k, v|
+      v.gsub!(/\s(\.\w+$)/, '\1')
+      v.gsub!(/\s+/, ' ')
+      @files[k] = v
+    end
+  end
+
+  def clean_underscores
+    @files.each do |k, v|
+      v.gsub!(/[_]/, ' ')
+      @files[k] = v
+    end
+  end
+
+  def clean_periods
+    @files.each do |k, v|
+      v.tr!('.', ' ')
+      v.gsub!(/ (\w+)$/, '.\1')
+      @files[k] = v
+    end
+  end
+
+  def find_replace
+    print 'Enter find: '
+    find = gets.chomp
+    print 'Enter replace: '
+    replace = gets.chomp
+    @files.each do |k, v|
+      v.gsub!(/#{find}/, replace.to_s)
+      @files[k] = v
+    end
+  end
+
+  def rename_files
+    @files.each do |k, v|
+      puts "Renaming '#{k}' to '#{v}'"
+      FileUtils.mv(k, v) unless k == v
+    end
+  end
+
+  private
+
+  def media?(file)
+    ft = file.split('.').last
+    MEDIA_TYPES.each do |m|
+      return true if m.casecmp(ft).zero?
+    end
+    false
+  end
+
+  def escape(a)
+    SPECIAL_CHARS.each do |s|
+      a.gsub!(s, "\\#{s}")
+    end
+    a
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
+  def main
+    loop do
+      menu
+      print 'Choice: '
+      case STDIN.getch
+      when '1' then clean_string
+      when '2' then clean_regex
+      when '3' then clean_spaces
+      when '4' then clean_underscores
+      when '5' then clean_periods
+      when '6' then find_replace
+      when '9' then pp @files
+      when '0'
+        rename_files
+        break
+      when "\u0003" # ctrl-c
+        puts
+        exit
+      end
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity
+
+  def menu
+    puts
+    @files = @files.sort_by { |_k, v| v }.to_h
+    @files.each_value { |v| puts v }
+    puts '--------------------'
+    puts '1. Clean string'
+    puts '2. Clean regex'
+    puts '3. Clean spaces'
+    puts '4. Clean underscores'
+    puts '5. Clean periods'
+    puts '6. Find and replace'
+    puts '9. Show files hash'
+    puts "0. Rename and exit\n"
+  end
+  # rubocop:enable Metrics/MethodLength
+end
+# rubocop:enable Metrics/ClassLength
+
+RenameEpisodes.new

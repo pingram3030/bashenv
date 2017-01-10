@@ -1,0 +1,8 @@
+set comments=
+set mouse=
+
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+autocmd BufNewFile *.sh 0r /usr/share/vim/vimfiles/template.sh
