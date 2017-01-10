@@ -2,5 +2,6 @@
 language: ruby
 before_script: 'sudo pip install bashate'
 script:
+  - 'mdl $(find -name "*.md")'
   - 'bundle exec rubocop -D'
-  - 'bashate -i E006 bashrc setup.sh lib/*.sh completion.d/*.sh profile.d/*.sh profile.d/host/*.sh'
+  - 'bashate -i E006 bashrc setup.sh $(find -name "*.sh")'

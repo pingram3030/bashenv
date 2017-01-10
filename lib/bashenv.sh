@@ -22,12 +22,13 @@ options, is to 'source \${BASHENV}' (${BASHENV}) and continue.
     -h, --help      show this help and exit
     -r, --reset     remove all var files and regenerate self
     -s, --setup     install self in to the shell of user: '${USER}'
+    -t, --test      run bashate, rubocop and markdownlint
 EOF
 }
 
 function _bashenv_getopts {
     OPTIND=1
-    local optspec=":hrs" OPTARG=($@)
+    local optspec=":hrst" OPTARG=($@)
     while getopts "${optspec}" opt; do
         case "${opt}" in
             h|help)
@@ -40,6 +41,10 @@ function _bashenv_getopts {
             ;;
             s|setup)
                 _bashenv_setup
+                return 0
+            ;;
+            t|test)
+                _bashenv_test
                 return 0
             ;;
         esac
@@ -60,4 +65,15 @@ function _bashenv_setup {
     echoerr "Running BashEnv setup"
     ${ENV_ROOT}/setup.sh
     bashenv
+}
+
+function _bashenv_test {
+    pushd ${ENV_ROOT} >/dev/null
+        echoerr "Testing shell..."
+        bashate -i E006 bashrc setup.sh $(find -name "*.sh")
+        echoerr "Testing markdown..."
+        mdl $(find -name "*.md")
+        echoerr "Testing ruby..."
+        bundle exec rubocop -D
+    popd >/dev/null
 }

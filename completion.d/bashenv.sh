@@ -8,7 +8,7 @@ _bashenv() {
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    option="-h --help -r --reset -s --setup"
+    option="-h --help -r --reset -s --setup -t --test"
 
     if [ $COMP_CWORD -eq 1 ]; then
         COMPREPLY=( $(compgen -W "${option}" -- ${cur}) )
