@@ -1,4 +1,4 @@
-#!/usr/bin/env bas
+#!/usr/bin/env bash
 
 export ENV_CREDS="${HOME}/.aws"
 export AWS_CREDS="${ENV_CREDS}/credentials"
