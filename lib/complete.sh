@@ -13,18 +13,19 @@ for complete_file in $(find "${ENV_VAR_COMPLETE}" -type f -name '*.sh'); do
     source ${complete_file}
 done
 
-# Find all directories (git repos) in the provided directory and create a
-# bash completion function
+# Private Functions
 #
-complete_path () {
+_complete_path () {
+    # Find all directories (git repos) in the provided directory and create a
+    # bash completion function
     [[ -z ${1-} ]] \
         && echoerr "Usage: ${FUNCNAME[0]} REPOS_ROOT" \
         && return
 
     local path="$1"
-    local app=$(basename ${path})
-    local completion_f="${ENV_VAR_COMPLETE}/${app}.sh"
-    local state_label="complete-${app}"
+    local environment=$(basename ${path})
+    local completion_f="${ENV_VAR_COMPLETE}/${environment}.sh"
+    local state_label="complete-${environment}"
 
     if state_test "${state_label}" 60; then
         source "${completion_f}"
@@ -37,25 +38,25 @@ complete_path () {
         [[ -d "${dir}/.git" ]] && repos+=($(basename ${dir}))
     done
 
-    _complete_single "${app}" ${repos[@]}
-    source "${ENV_VAR_COMPLETE}/${app}.sh"
+    _complete_single "${environment}" ${repos[@]}
+    source "${ENV_VAR_COMPLETE}/${environment}.sh"
 
     state_set "${state_label}"
 }
 
-# Create a completion function for the app from an array of its subdirectories
-#
 _complete_single () {
-    local app="$1"
+    # Create a completion function for the environment from an array of its
+    # subdirectories
+    local environment="$1"
     local opts="${@:2}"
 
-    cat > "${ENV_VAR_COMPLETE}/${app}.sh" <<EOF
+    cat > "${ENV_VAR_COMPLETE}/${environment}.sh" <<EOF
 #!/usr/bin/env bash
 #
-# Completion file for ${app}
+# Completion file for ${environment}
 #
 
-_${app} () {
+_${environment} () {
     local cur prev opts
     COMPREPLY=()
     cur="\${COMP_WORDS[COMP_CWORD]}"
@@ -68,10 +69,10 @@ _${app} () {
     fi
 }
 
-complete -F _${app} ${app}
+complete -F _${environment} ${environment}
 
 EOF
 
-    source "${ENV_VAR_COMPLETE}/${app}.sh"
+    source "${ENV_VAR_COMPLETE}/${environment}.sh"
 }
 

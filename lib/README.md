@@ -4,13 +4,6 @@
 
 These are aliases I use across all hosts
 
-## app.sh
-
-This could possibly be better named, but I am calling an 'app' the application
-of this bash system to a $thing.
-
-I.e. I do work for CompanyX, the app is "CompanyX"
-
 ## common.sh
 
 These functions are handy to have in ones arsenal.
@@ -24,6 +17,12 @@ These functions create completion functions for each app.
 ## cred.sh
 
 WIP
+
+## environment.sh
+
+This creates handy 'environment' functions to make switching between and using
+an environment easy. An environment can contain multiple repositories and need
+special functions etc.; this is a key part of the magic.
 
 ## host.sh
 

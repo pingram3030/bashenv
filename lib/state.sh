@@ -5,13 +5,13 @@ export ENV_VAR_STATE="${ENV_VAR}/state"
 [[ ! -d "${ENV_VAR_STATE}" ]] && mkdir -p "${ENV_VAR_STATE}"  
 
 state_test () {
-    local app=$1
+    local environment=$1
     local minutes=$2
     [[ ! ${minutes} =~ ^[0-9]+$ ]] \
         && echoerr "ERROR: state_test function error. minutes not defined as integer '${minutes}'" \
         && return 255
 
-    local state_file="${ENV_VAR_STATE}/${app}"
+    local state_file="${ENV_VAR_STATE}/${environment}"
     [[ ! -f "${state_file}" ]] && echo 0 > ${state_file}
     local state_seconds=$(grep -Po "\d+" ${state_file})
 
@@ -25,8 +25,8 @@ state_test () {
 }
 
 state_set () {
-    local app=$1
-    local state_file="${ENV_VAR_STATE}/${app}"
+    local environment=$1
+    local state_file="${ENV_VAR_STATE}/${environment}"
     local seconds=$(date +%s)
     echo ${seconds} > ${state_file} \
         && return 0 \
@@ -34,8 +34,8 @@ state_set () {
 }
 
 state_remove () {
-    local app=$1
-    local state_file="${ENV_VAR_STATE}/${app}"
+    local environment=$1
+    local state_file="${ENV_VAR_STATE}/${environment}"
     rm -f ${state_file} \
         && return 0 \
         || return 1

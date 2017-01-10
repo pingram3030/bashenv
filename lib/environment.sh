@@ -26,9 +26,8 @@ environment () {
         && echoerr "Creates a function and completion file for managing git repos" \
         && return 0
     local environment_path=$1
-    _env_function ${environment_path}
+    _environment_function ${environment_path}
     _complete_path ${environment_path}
-    echoerr "Environment and completion functions created for '$(basename ${environment_path})'."
 }
 
 # Private Functions

@@ -8,4 +8,4 @@
 # Usage: $ dev <tab><tab>
 #
 
-app "${HOME}/dev"
+environment "${HOME}/dev"
