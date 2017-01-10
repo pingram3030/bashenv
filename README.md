@@ -9,6 +9,7 @@ There are also some scripts and functions I like to use everywhere.
 ## Usage
 
 ### Setup
+
 `setup.sh` can be run from anywhere in the filesystem; JustWorks™
 
 ```
@@ -16,6 +17,7 @@ There are also some scripts and functions I like to use everywhere.
 ```
 
 ### Using
+
 To make use of the auto-automatic completion functions and such, simply create
 a shell file in `profile.d` with the contents of:
 
@@ -24,6 +26,7 @@ app $PATH_TO_DIR_CONTAINING_GIT_REPOS
 ```
 
 For example:
+
 ```
 app "${HOME}/dev"
 ```
@@ -44,7 +47,7 @@ For example:
 ```
 [user@host ~]$ dev <tab><tab>
 LineageOS               phoronix-test-suite     webdl
-[user@host ~]$ dev phoronix-test-suite 
+[user@host ~]$ dev phoronix-test-suite
 * master
 running 'git pull'
 Already up-to-date.
@@ -55,22 +58,28 @@ Already up-to-date.
 ## Structure
 
 ### bashrc
+
 This is the magic sauce that makes everything work. It completely sets up
 BashEnv and can be called at any time by executing `bashrc`.
 
 ### bin
+
 Scripts and other executables that I want in $PATH go here.
 
 ### completion.d
+
 If I have made a completion script for a bin or a function, it goes here.
 
 ### lib
+
 All of the BashEnv libs and any private functions I may need to use.
 
 ### profile.d
+
 Things go in here that I want to run with every new terminal, such as the
 setting of special ENV vars.
 
 ### var
+
 Everything ephemeral goes in here; don't store anything important here, it's in
 `.git_ignore`
