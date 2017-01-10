@@ -15,15 +15,12 @@ export ENV_VAR="${ENV_ROOT}/var"
 
 [[ -z ${PRE_ENV_PATH-} ]] && export PRE_ENV_PATH="${PATH}"
 
-[[ ! "${PATH}" =~ "${HOME}/.bash/bin" ]] \
-    && export PATH=${HOME}/.bash/bin:${PATH}
+[[ ! "${PATH}" =~ "${ENV_BIN}" ]] \
+    && export PATH=${ENV_BIN}:${PATH}
 
-source "${ENV_LIB}/app.sh"
-source "${ENV_LIB}/common.sh"
-source "${ENV_LIB}/complete.sh"
-source "${ENV_LIB}/cred.sh"
-source "${ENV_LIB}/host.sh"
-source "${ENV_LIB}/state.sh"
+for lib_file in $(find ${ENV_LIB} -type f -name '*.sh'); do
+    source "${lib_file}"
+done
 
 for profile_file in $(find ${ENV_ROOT}/profile.d/ -type f -name '*.sh'); do
     source "${profile_file}"
