@@ -1,4 +1,2 @@
-lib/private/*.sh
-profile.d/private/*.sh
 var/*
 Gemfile.lock
