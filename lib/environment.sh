@@ -33,9 +33,10 @@ environment () {
 # Private Functions
 #
 _environment_function () {
-    local path="$1"
-    local environment=$(basename ${path})
-    local function_f="${ENV_VAR_ENVIRONMENT}/${environment}.sh"
+    local path="$1" environment function_f
+
+    environment=$(basename ${path})
+    function_f="${ENV_VAR_ENVIRONMENT}/${environment}.sh"
 
     [[ -f ${function_f} ]] && return 0
 

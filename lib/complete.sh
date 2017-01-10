@@ -20,12 +20,14 @@ _complete_path () {
     # bash completion function
     [[ -z ${1-} ]] \
         && echoerr "Usage: ${FUNCNAME[0]} REPOS_ROOT" \
-        && return
+        && return \
+        || local path="$1"
 
-    local path="$1"
-    local environment=$(basename ${path})
-    local completion_f="${ENV_VAR_COMPLETE}/${environment}.sh"
-    local state_label="complete-${environment}"
+    local environment completion_f state_label dir repos
+
+    environment=$(basename ${path})
+    completion_f="${ENV_VAR_COMPLETE}/${environment}.sh"
+    state_label="complete-${environment}"
 
     if state_test "${state_label}" 60; then
         source "${completion_f}"
@@ -47,8 +49,7 @@ _complete_path () {
 _complete_single () {
     # Create a completion function for the environment from an array of its
     # subdirectories
-    local environment="$1"
-    local opts="${@:2}"
+    local environment="$1" opts="${@:2}"
 
     cat > "${ENV_VAR_COMPLETE}/${environment}.sh" <<EOF
 #!/usr/bin/env bash
