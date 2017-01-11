@@ -8,7 +8,7 @@ source ${ENV_LIB}/common.sh
 function bashenv {
     local options=($@)
     [[ -z ${options} ]] \
-        && source ${BASHENV} \
+        && source ${ENV_BASHRC} \
         && echoerr "BashEnv initialised" \
         || _bashenv_getopts ${options[@]}
 }
@@ -17,11 +17,11 @@ function _bashenv_help {
     cat << EOF
 Usage: bashenv [-h|--help] [-r|--reset] [-s|--setup]
 Perform basic functions for BashEnv. The default action, when run without
-options, is to 'source \${BASHENV}' (${BASHENV}) and continue.
+options, is to 'source \${ENV_BASHRC}' (${ENV_BASHRC}) and continue.
 
     -h, --help      show this help and exit
     -r, --reset     remove all var files and regenerate self
-    -s, --setup     install self in to the shell of user: '${USER}'
+    -s, --setup     install self in to the shell of the running user
     -t, --test      run bashate, rubocop and markdownlint
 EOF
 }
@@ -29,6 +29,8 @@ EOF
 function _bashenv_getopts {
     OPTIND=1
     local optspec=":hrst" OPTARG=($@)
+    # Long options don't actually work in this case, but it works enough to
+    # give the illusion that it does.
     while getopts "${optspec}" opt; do
         case "${opt}" in
             h|help)
@@ -77,3 +79,4 @@ function _bashenv_test {
         bundle exec rubocop -D
     popd >/dev/null
 }
+

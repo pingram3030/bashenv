@@ -44,7 +44,7 @@ tab complete its options for more info.
 [user@host ~]$ bashenv --help
 Usage: bashenv [-h|--help] [-r|--reset] [-s|--setup]
 Perform basic functions for BashEnv. The default action, when run without
-options, is to 'source ${BASHENV}' (/home/me/.bash/bashrc) and continue.
+options, is to 'source ${ENV_BASHRC}' (/home/me/.bash/bashrc) and continue.
 
     -h, --help      show this help and exit
     -r, --reset     remove all var files and regenerate self
