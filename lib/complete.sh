@@ -3,8 +3,6 @@
 # Bash tab completion is the ducks nuts.
 #
 
-source "${ENV_LIB}/state.sh"
-
 export ENV_VAR_COMPLETE="${ENV_VAR}/complete"
 
 [[ ! -d "${ENV_VAR_COMPLETE}" ]] && mkdir -p "${ENV_VAR_COMPLETE}"

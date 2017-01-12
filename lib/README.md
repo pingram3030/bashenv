@@ -2,7 +2,7 @@
 
 ## bashenv.sh
 
-Functions for BashEnv self management 
+Functions for BashEnv self management
 
 ## common.sh
 
@@ -28,9 +28,4 @@ need special functions etc.; this is a key part of the magic.
 
 Some functions, aliases, etc. I do not want to be version controlled. Those
 private libraries reside in the $PWD/private dir.
-
-## state.sh
-
-As time marches on git repos may be added or removed, so I need to track state
-of things; this is primarily used by `complete.sh`.
 
