@@ -11,16 +11,19 @@ export ENV_VAR_ENVIRONMENT="${ENV_VAR}/environment"
 
 [[ ! -d "${ENV_VAR_ENVIRONMENT}" ]] && mkdir -p "${ENV_VAR_ENVIRONMENT}"
 
+# Load all dynamically generated environment files
+#
 for env_file in $(find ${ENV_VAR_ENVIRONMENT} -type f -name '*.sh'); do
     source ${env_file}
 done
 
 # Public Functions
 #
+# The 'environment' function creates a tool to easily access git repositories.
+# It enables the separation of git repos and creates a handy bash completion
+# function to help access them.
+#
 environment () {
-    # Several git repos may be required for a particular env. This function
-    # creates a tool named for the env folder that can be tab completed and
-    # that also does basic git repo update things.
     [[ -z ${1-} ]] \
         && echoerr "Usage: environment PATH" \
         && echoerr "Creates a function and completion file for managing git repos" \
@@ -60,5 +63,4 @@ ${environment}
 EOF
     source "${function_f}"
 }
-
 

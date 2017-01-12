@@ -9,15 +9,21 @@ export ENV_VAR_COMPLETE="${ENV_VAR}/complete"
 
 [[ ! -d "${ENV_VAR_COMPLETE}" ]] && mkdir -p "${ENV_VAR_COMPLETE}"
 
+# Load all dynamically generated completion files
+#
 for complete_file in $(find "${ENV_VAR_COMPLETE}" -type f -name '*.sh'); do
     source ${complete_file}
 done
 
 # Private Functions
 #
+# _complete_path is used almost exclusively by 'environment'. You parse in a
+# base path that contains git repos, not the repo itself - its parent, it
+# iterates through each directory looking for '.git', adds it to an array and
+# then calls _create_single with the name of the containing folder and the
+# array of git repos.
+#
 _complete_path () {
-    # Find all directories (git repos) in the provided directory and create a
-    # bash completion function
     [[ -z ${1-} ]] \
         && echoerr "Usage: ${FUNCNAME[0]} REPOS_ROOT" \
         && return \
@@ -27,12 +33,6 @@ _complete_path () {
 
     environment=$(basename ${path})
     completion_f="${ENV_VAR_COMPLETE}/${environment}.sh"
-    state_label="complete-${environment}"
-
-    if state_test "${state_label}" 60; then
-        source "${completion_f}"
-        return 0
-    fi
 
     local -a repos
 
@@ -42,13 +42,11 @@ _complete_path () {
 
     _complete_single "${environment}" ${repos[@]}
     source "${ENV_VAR_COMPLETE}/${environment}.sh"
-
-    state_set "${state_label}"
 }
 
+# Create a completion function for $environment from an array of its subdirs
+#
 _complete_single () {
-    # Create a completion function for the environment from an array of its
-    # subdirectories
     local environment="$1" opts="${@:2}"
 
     cat > "${ENV_VAR_COMPLETE}/${environment}.sh" <<EOF

@@ -2,11 +2,11 @@
 
 ## bashenv.sh
 
-Self help
+Functions for BashEnv self management 
 
 ## common.sh
 
-These functions are handy to have in ones arsenal.
+Handy functions for ones bash environment.
 
 ## complete.sh
 
@@ -21,8 +21,8 @@ WIP
 ## environment.sh
 
 This creates handy 'environment' functions to make switching between and using
-an environment easy. An environment can contain multiple repositories and need
-special functions etc.; this is a key part of the magic.
+an environment easy. An environment can contain multiple git repositories and
+need special functions etc.; this is a key part of the magic.
 
 ## private.sh
 
