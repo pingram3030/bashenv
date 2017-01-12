@@ -46,6 +46,10 @@ class RenameEpisodes
     Dir.glob(File.join(Dir.getwd, '*')) do |f|
       @files[File.basename(f)] = File.basename(f) if media?(f)
     end
+    if @files.empty?
+      puts 'No media files found. Exiting.'
+      exit 0
+    end
     main
   end
 
@@ -131,7 +135,6 @@ class RenameEpisodes
   def main
     loop do
       menu
-      print 'Choice: '
       case STDIN.getch
       when '1' then clean_string
       when '2' then clean_regex
@@ -164,7 +167,7 @@ class RenameEpisodes
     puts '5. Clean periods'
     puts '6. Find and replace'
     puts '9. Show files hash'
-    puts "0. Rename and exit\n"
+    puts '0. Rename and exit'
   end
   # rubocop:enable Metrics/MethodLength
 end
