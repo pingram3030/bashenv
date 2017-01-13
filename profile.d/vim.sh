@@ -6,12 +6,13 @@ if [[ ! -f ${VIMRC} ]]; then
     cp ${ENV_ROOT}/profile.d/vim/vimrc ${VIMRC}
 fi
 
-# When you edit a non-existent file, vim can create the file from a template
-# based on the file extension.
+# If you are editing an empty file, vim can automatically create the file from
+# a known template based on the file extension.
 #
-# Bash
-[[ $(grep -c template\.sh ${VIMRC} || true) == 0 ]] \
-    && echo "autocmd BufNewFile *.sh 0r ${ENV_ROOT}/profile.d/vim/template.sh" >> ${VIMRC}
-# Ruby
-[[ $(grep -c template\.rb ${VIMRC} || true) == 0 ]] \
-    && echo "autocmd BufNewFile *.rb 0r ${ENV_ROOT}/profile.d/vim/template.rb" >> ${VIMRC}
+VIM_TEMPLATE_EXTENSIONS=(py rb sh)
+
+for extension in ${VIM_TEMPLATE_EXTENSIONS}; do
+    [[ $(grep -c template\.${extension} ${VIMRC} || true) == 0 ]] \
+        && echo "autocmd BufNewFile *.${extension} 0r ${ENV_ROOT}/profile.d/vim/template.${extension}" >> ${VIMRC}
+done
+
