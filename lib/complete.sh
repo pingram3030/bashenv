@@ -18,7 +18,7 @@ done
 # _complete_path is used almost exclusively by 'environment'. You parse in a
 # base path that contains git repos, not the repo itself - its parent, it
 # iterates through each directory looking for '.git', adds it to an array and
-# then calls _create_single with the name of the containing folder and the
+# then calls _create_function with the name of the containing folder and the
 # array of git repos.
 #
 _complete_path () {
@@ -27,7 +27,7 @@ _complete_path () {
         && return \
         || local path="$1"
 
-    local environment completion_f state_label dir repos
+    local environment completion_f dir repos
 
     environment=$(basename ${path})
     completion_f="${ENV_VAR_COMPLETE}/${environment}.sh"
@@ -38,13 +38,13 @@ _complete_path () {
         [[ -d "${dir}/.git" ]] && repos+=($(basename ${dir}))
     done
 
-    _complete_single "${environment}" ${repos[@]}
+    _complete_function "${environment}" ${repos[@]}
     source "${ENV_VAR_COMPLETE}/${environment}.sh"
 }
 
 # Create a completion function for $environment from an array of its subdirs
 #
-_complete_single () {
+_complete_function () {
     local environment="$1" opts="${@:2}"
 
     cat > "${ENV_VAR_COMPLETE}/${environment}.sh" <<EOF
