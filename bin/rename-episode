@@ -39,6 +39,14 @@ class RenameEpisodes
   # rubocop:disable Metrics/LineLength
   MEDIA_TYPES = %w(asf avi divx m2ts m4v mkv mov mp4 mpeg mpg ogm rmvb ts vob webm wmv).freeze
   SPECIAL_CHARS = %w([ ] . $ ( )).freeze
+  FUNCTIONS = {
+    'Clean string'      => :clean_string,
+    'Clean regex'       => :clean_regex,
+    'Clean spaces'      => :clean_spaces,
+    'Clean underscores' => :clean_underscores,
+    'Clean periods'     => :clean_periods,
+    'Find and replace'  => :find_replace
+  }.freeze
   # rubocop:enable Metrics/LineLength
 
   def initialize
@@ -107,8 +115,10 @@ class RenameEpisodes
 
   def rename_files
     @files.each do |k, v|
-      puts "Renaming '#{k}' to '#{v}'"
-      FileUtils.mv(k, v) unless k == v
+      unless k == v
+        puts "Renaming '#{k}' to '#{v}'"
+        FileUtils.mv(k, v)
+      end
     end
   end
 
@@ -129,47 +139,37 @@ class RenameEpisodes
     a
   end
 
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def main
     loop do
       menu
-      case STDIN.getch
-      when '1' then clean_string
-      when '2' then clean_regex
-      when '3' then clean_spaces
-      when '4' then clean_underscores
-      when '5' then clean_periods
-      when '6' then find_replace
-      when '9' then pp @files
-      when '0'
+      choice = STDIN.getch
+      if choice.to_i > 0 && choice.to_i <= FUNCTIONS.count
+        send(FUNCTIONS.values[choice.to_i - 1])
+      elsif choice == '9'
+        pp @files
+      elsif choice == '0'
         rename_files
         break
-      when "\u0003" # ctrl-c
+      elsif choice == "\u0003" # ctrl-c
         puts
         exit
       end
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def menu
     puts
     @files = @files.sort_by { |_k, v| v }.to_h
     @files.each_value { |v| puts v }
     puts '--------------------'
-    puts '1. Clean string'
-    puts '2. Clean regex'
-    puts '3. Clean spaces'
-    puts '4. Clean underscores'
-    puts '5. Clean periods'
-    puts '6. Find and replace'
+    FUNCTIONS.each_with_index do |a, i|
+      puts "#{i + 1}. #{a[0]}"
+    end
     puts '9. Show files hash'
     puts '0. Rename and exit'
   end
-  # rubocop:enable Metrics/MethodLength
 end
 # rubocop:enable Metrics/ClassLength
 
