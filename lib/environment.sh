@@ -7,6 +7,8 @@
 # date.
 #
 
+source ${ENV_LIB}/common.sh
+
 export ENV_VAR_ENVIRONMENT="${ENV_VAR}/environment"
 
 [[ ! -d "${ENV_VAR_ENVIRONMENT}" ]] && mkdir -p "${ENV_VAR_ENVIRONMENT}"
@@ -23,19 +25,29 @@ done
 # It enables the separation of git repos and creates a handy bash completion
 # function to help access them.
 #
-environment () {
+function environment {
     [[ -z ${1-} ]] \
-        && echoerr "Usage: environment PATH" \
-        && echoerr "Creates a function and completion file for managing git repos" \
+        && _environment_usage \
         && return 0
     local environment_path=$1
-    _environment_function ${environment_path}
-    _complete_path ${environment_path}
+    if [[ -d ${environment_path} ]]; then
+        _environment_function ${environment_path}
+        _complete_path ${environment_path}
+    else
+        echoerr "ERROR: path '${environment_path}' does not exist as a directory"
+        _environment_usage
+        return 1
+    fi
 }
 
 # Private Functions
 #
-_environment_function () {
+function _environment_usage {
+    echoerr "Usage: environment PATH"
+    echoerr "Creates a function and completion file for managing git repos"
+}
+
+function _environment_function {
     local path="$1" environment function_f
 
     environment=$(basename ${path})
