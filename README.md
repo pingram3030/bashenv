@@ -1,9 +1,12 @@
-# Bash-Env
+# BashEnv
 
-Different computers are used for different things such as working for different
-people and organisations. Across these roles and machines there is a need to
-have access to different git repos, credentials and tools, but still use the
-same aliases, functions and scripts.
+When working for multiple employers, or on different projects, it is handy to
+separate out the location of git repositories used, in addition to making use
+of different functions, aliases and variables.`
+
+BashEnv is a system for helping to automate and standardise a bash environment.
+It is designed to be modified and cloned on to multiple computers, but in a way
+that enables localised customisations.
 
 ## Overview
 
@@ -41,6 +44,8 @@ The `bashenv` function enables basic admin functionality for BashEnv. You can
 tab complete its options for more info.
 
 ```
+[user@host ~]$ bashenv -<tab><tab>
+-h       --help   -r       --reset  -s       --setup  -t       --test 
 [user@host ~]$ bashenv --help
 Usage: bashenv [-h|--help] [-r|--reset] [-s|--setup]
 Perform basic functions for BashEnv. The default action, when run without
@@ -54,6 +59,12 @@ options, is to 'source ${ENV_BASHRC}' (/home/me/.bash/bashrc) and continue.
 
 ### Using
 
+#### Environment
+
+`environment` is a function that creates two functions. One that is directly
+callable and use used to access contained git repos and the other is a
+completion function to make use of the first function quicker and easier.
+
 To make use of the auto-automatic completion functions and such, simply create
 a shell file in `profile.d` with the contents of:
 
@@ -61,11 +72,16 @@ a shell file in `profile.d` with the contents of:
 environment $PATH_TO_DIR_CONTAINING_GIT_REPOS
 ```
 
-For example; I check out random git repos in to `~/dev`. The running of
-`bashenv` with no options makes it reload itself:
+For example; I check out random git repos in to `~/dev`. `environment` will
+create a function called 'dev' that can be used to access the repos it contains
 
 ```
 [user@host ~]$ echo -e '#!/usr/bin/env bash\n\nenvironment ${HOME}/dev' > $ENV_ROOT/profile.d/dev.sh
+```
+
+The running of `bashenv` with no options makes the system reload itself:
+
+```
 [user@host ~]$ bashenv
 BashEnv initialised
 ```
