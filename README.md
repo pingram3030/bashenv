@@ -45,7 +45,7 @@ tab complete its options for more info.
 
 ```
 [user@host ~]$ bashenv -<tab><tab>
--h       --help   -r       --reset  -s       --setup  -t       --test 
+-h       --help   -r       --reset  -s       --setup  -t       --test
 [user@host ~]$ bashenv --help
 Usage: bashenv [-h|--help] [-r|--reset] [-s|--setup]
 Perform basic functions for BashEnv. The default action, when run without
