@@ -67,8 +67,6 @@ ${environment} () {
 
     cd \${path}
     git branch
-    echoerr "running 'git pull'; ctrl-c to interrupt"
-    git pull
 }
 
 ${environment}
