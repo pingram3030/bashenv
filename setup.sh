@@ -12,8 +12,10 @@ BASHENV_SOURCE_PATH="$(dirname $(readlink -f $0))"
 
 PACKAGES=(
     python3-bashate
-    rubygem-bundler
+    ruby-devel
     ruby-irb
+    rubygem-rake
+    rubygem-bundler
 )
 
 echo "****************************************************"
@@ -43,8 +45,8 @@ echo -n "Checking ~/.bashrc: "
 # Some rpms are nice to have, some are mandatory
 echo -n "Checking for needed packages: "
 for package in ${PACKAGES[@]}; do
-    rpm -q $package >/dev/null
-    [[ $? -gt 0 ]] \
+    pkg=$(rpm -q $package || true)
+    [[ ${pkg} == "" ]] \
         && echo "Package '${package}' is not installed." \
         && missing+=(${package})
 done
